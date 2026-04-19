@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title> Algoritma Pemrograman || UNNES 2026 </title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #eef2ff 0%, #e0eafc 100%);
+            min-height: 100vh;
+        }
+
+        /* ========== HALAMAN LOGIN ========== */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .login-container {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255,255,255,0.98);
+            border-radius: 2rem;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .login-card {
+            padding: 2rem 2rem 2.2rem;
+        }
+
+        .hero-badge {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #0f2f3c;
+            background: linear-gradient(135deg, #e1f0f7, #cde5ef);
+            display: block;
+            text-align: center;
+            padding: 0.7rem 1rem;
+            border-radius: 60px;
+            margin-bottom: 1.8rem;
+        }
+        .hero-badge i {
+            margin-right: 8px;
+            color: #1f6e8c;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+        .welcome-greeting {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: #0a2a38;
+            margin-bottom: 0.3rem;
+        }
+        .welcome-sub {
+            font-size: 0.9rem;
+            color: #4f6f7e;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            font-size: 1rem;
+            background: #f9fbfd;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 1.2rem;
+            outline: none;
+            font-weight: 500;
+        }
+        .input-field:focus {
+            border-color: #2c7da0;
+            box-shadow: 0 0 0 3px rgba(44,125,160,0.2);
+        }
+
+        .login-btn {
+            width: 100%;
+            background: #0f2f3c;
+            border: none;
+            padding: 0.9rem;
+            font-weight: 700;
+            color: white;
+            border-radius: 2rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: 0.2s;
+        }
+        .login-btn:hover { background: #1f4e62; }
+
+        .message-box {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 1rem;
+            display: none;
+        }
+        .message-box.error { background: #ffe6e5; color: #b91c1c; display: block; }
+
+        /* ========== BERANDA ========== */
+        .dashboard {
+            display: none;
+            padding: 1.5rem 2rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(12px);
+            padding: 0.8rem 2rem;
+            border-radius: 60px;
+            margin-bottom: 2rem;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: #0f2f3c;
+        }
+        .logo-area i {
+            font-size: 1.8rem;
+            color: #2c7da0;
+        }
+        .user-welcome {
+            background: white;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+        .logout-btn {
+            background: none;
+            border: 1px solid #cbdde6;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .logout-btn:hover {
+            background: #fff0f0;
+            border-color: #b91c1c;
+            color: #b91c1c;
+        }
+
+        /* 3 Cards dengan border kiri biru laut */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .feature-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.8rem;
+            cursor: pointer;
+            border-left: 8px solid #1f6e8c;
+            border-top: 1px solid rgba(44,125,160,0.15);
+            border-right: 1px solid rgba(44,125,160,0.15);
+            border-bottom: 1px solid rgba(44,125,160,0.15);
+            transition: all 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-left: 8px solid #0a4b62;
+            box-shadow: 0 28px 40px -16px rgba(31,110,140,0.3);
+        }
+        .card-icon {
+            font-size: 2.8rem;
+            background: #e1f0f7;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+            margin-bottom: 1.2rem;
+            color: #1f6e8c;
+        }
+        .feature-card h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+        .feature-card p {
+            color: #4a6272;
+            line-height: 1.4;
+        }
+        .badge-soon {
+            background: #ffeed9;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #b45f06;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+        .badge-active {
+            background: #c7e9f0;
+            color: #0f5c74;
+        }
+
+        /* ========== HALAMAN SORTING ========== */
+        .sorting-page {
+            display: none;
+            min-height: 100vh;
+            background: linear-gradient(145deg, #f6f9fc 0%, #eef2fa 100%);
+            padding: 2rem;
+        }
+        .sorting-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .back-btn {
+            background: white;
+            border: none;
+            padding: 0.6rem 1.3rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .back-btn:hover {
+            background: #0f2f3c;
+            color: white;
+        }
+        .sort-title {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1f5e7a, #0a3b4b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .visual-container {
+            background: white;
+            border-radius: 2rem;
+            padding: 2rem;
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .array-bars {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 1rem;
+            flex-wrap: wrap;
+            min-height: 280px;
+            margin: 2rem 0;
+        }
+        .bar {
+            background: linear-gradient(180deg, #2c7da0, #1f5e7a);
+            width: 60px;
+            border-radius: 16px 16px 8px 8px;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 10px;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .bar span {
+            background: rgba(0,0,0,0.6);
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        .algo-btn {
+            background: #0f2f3c;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .algo-btn:hover {
+            background: #2c7da0;
+            transform: scale(0.96);
+        }
+        .reset-btn {
+            background: #e9ecef;
+            color: #1f3b48;
+        }
+        .step-info {
+            background: #e1f0f7;
+            padding: 1rem;
+            border-radius: 1.5rem;
+            text-align: center;
+            font-weight: 500;
+        }
+        @media (max-width: 700px) {
+            .bar { width: 40px; }
+            .dashboard { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HALAMAN LOGIN -->
+<div id="loginPage" class="login-page">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="hero-badge">
+                <i class="fas fa-code"></i> Algoritma Pemrograman
+            </div>
+            <div class="welcome-section">
+                <div class="welcome-greeting">Hai, selamat datang kembali</div>
+                <div class="welcome-sub">Silakan masukkan NIM anda untuk melanjutkan</div>
+            </div>
+            <form id="nimLoginForm">
+                <div class="input-group">
+                    <label style="font-weight:500;">Nomor Induk Mahasiswa (NIM)</label>
+                    <input type="text" id="nimInput" class="input-field" placeholder="Contoh: 2504030039" autocomplete="off" required>
+                    <div style="font-size:12px; margin-top:8px;">🔑 Masukkan NIM untuk akses pembelajaran</div>
+                </div>
+                <button type="submit" class="login-btn"><i class="fas fa-graduation-cap"></i> Masuk dengan NIM</button>
+                <div id="loginMessage" class="message-box"></div>
+            </form>
+            <div style="margin-top:1.8rem; text-align:center; font-size:0.7rem; color:#6c868e;">Dengan melanjutkan, kamu menerima syarat penggunaan</div>
+        </div>
+    </div>
+</div>
+
+<!-- HALAMAN BERANDA -->
+<div id="dashboardPage" class="dashboard">
+    <div class="navbar">
+        <div class="logo-area"><i class="fas fa-laptop-code"></i> <span>AlgoStudio</span></div>
+        <div class="user-welcome" id="welcomeUserName">Selamat datang, Mahasiswa</div>
+        <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+    </div>
+    <div>
+        <h2 style="font-size: 1.8rem; font-weight: 700;">📚 Jelajahi Modul Algoritma</h2>
+        <p style="color:#2c5a6e;">Pilih materi dibawah, saat ini fokus pada tugas <strong>Algoritma Pengurutan</strong> ✨</p>
+    </div>
+
+    <div class="card-grid">
+        <!-- Card 1: Fungsi dan Prosedur -->
+        <div class="feature-card" id="cardFungsi">
+            <div class="card-icon"><i class="fas fa-cogs"></i></div>
+            <h3>Fungsi dan Prosedur</h3>
+            <p>Pelajari konsep modular programming, rekursif, dan parameter. Lengkap dengan simulasi.</p>
+            <div class="badge-soon">🚧 Segera Hadir</div>
+        </div>
+        <!-- Card 2: Algoritma Pengurutan (Tugas Aktif) -->
+        <div class="feature-card" id="cardSorting">
+            <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+            <h3>Algoritma Pengurutan</h3>
+            <p>Bubble Sort, Selection Sort, Insertion Sort. Visual interaktif dan animasi.</p>
+            <div class="badge-soon badge-active">⭐ Tugas Aktif</div>
+        </div>
+        <!-- Card 3: Algoritma Pencarian -->
+        <div class="feature-card" id="cardSearch">
+            <div class="card-icon"><i class="fas fa-search"></i></div>
+            <h3>Algoritma Pencarian</h3>
+            <p>Linear Search, Binary Search, dan kompleksitas waktu. Interaktif.</p>
+            <div class="badge-soon">🚧 Segera Hadir</div>
+        </div>
+    </div>
+</div>
+
+<!-- HALAMAN ALGORITMA PENGURUTAN -->
+<div id="sortingPage" class="sorting-page">
+    <div class="sorting-header">
+        <button class="back-btn" id="backToDashboardFromSort"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</button>
+        <h1 class="sort-title"><i class="fas fa-sort-amount-down-alt"></i> Algoritma Pengurutan</h1>
+    </div>
+    <div class="visual-container">
+        <h3 style="margin-bottom: 0.5rem;">📊 Visualisasi Sorting</h3>
+        <p style="margin-bottom: 1rem;">Klik tombol algoritma untuk melihat proses pengurutan data secara dinamis</p>
+        <div id="arrayBars" class="array-bars"></div>
+        <div class="controls">
+            <button class="algo-btn" id="bubbleSortBtn">🫧 Bubble Sort</button>
+            <button class="algo-btn" id="selectionSortBtn">🎯 Selection Sort</button>
+            <button class="algo-btn" id="insertionSortBtn">📌 Insertion Sort</button>
+            <button class="algo-btn reset-btn" id="resetArrayBtn">🔄 Reset Array</button>
+        </div>
+        <div id="sortStepMessage" class="step-info">
+            ✨ Pilih algoritma untuk melihat animasi pengurutan
+        </div>
+    </div>
+    <div style="background: white; border-radius: 1.5rem; padding: 1.5rem;">
+        <h4><i class="fas fa-lightbulb"></i> Penjelasan Singkat</h4>
+        <p id="explanationText">Klik salah satu algoritma untuk melihat bagaimana array diurutkan langkah demi langkah.</p>
+    </div>
+</div>
+
+<script>
+    // Data NIM dan Nama Mahasiswa (untuk sapaan)
+    const studentNames = {
+        "2504030039": "Muhammad Irsyadul Wavi",
+        "2504030040": "Demas Alan Wibowo",
+        "2504030041": "Salsabila Azzahra Nur Rila",
+        "2504030042": "Noor Ayyana Ha Azza",
+        "2504030043": "Nabila 'Aina Syarifa",
+        "2504030044": "Mareno Dwi Faishal Al Fattah",
+        "2504030045": "Haichal Waiz Al Qodri",
+        "2504030046": "Chafiyya Shofa",
+        "2504030047": "Az Zahra Nadia Hauna",
+        "2504030048": "Azka Qaani' Muhana",
+        "2504030049": "Wulan Hari Cahyani",
+        "2504030050": "Klara Faradina Wahda",
+        "2504030051": "Nayla Syifa Khilyatul Aulia",
+        "2504030052": "Naila Disti Amanda Meilany",
+        "2504030053": "Cinta Na'ilah Fajrina",
+        "2504030054": "Ananda Muhammad Fikra Aditama",
+        "2504030055": "Elvis Salma",
+        "2504030056": "Naufal Saputra",
+        "2504030057": "Taufiqurrahman",
+        "2504030058": "Adhisty Dwi Purwanti",
+        "2504030059": "Muhammad Fairuz Zaki",
+        "2504030060": "Auzora Intan Aulia",
+        "2504030061": "Sukma Ruciasari",
+        "2504030062": "Muhamad Elian Nabil",
+        "2504030063": "Ismail Hasan",
+        "2504030064": "Achmad Muqorobin",
+        "2504030065": "Farella Gita Putri Ramadani",
+        "2504030066": "Yuniana Afni",
+        "2504030067": "Belda Ardella Ramadhani",
+        "2504030068": "Ega Patriya",
+        "2504030069": "Hasifa Sulistia Ramadhani",
+        "2504030070": "Gading Adi Raga",
+        "2504030071": "Farris Muhamad Indi Lutfi",
+        "2504030072": "Immanuel Hutapea",
+        "2504030073": "Daniel Ignatius Iwan Lutan",
+        "2504030074": "Ninda Rismawati Virginia",
+        "2504030075": "Agil Aliy Ashghar",
+        "2504030076": "Zahwa Cinta Nabila",
+        "4111419050": "Aziz Nurhidayat Adriyanto"
+    };
+
+    let currentUser = { nim: "", name: "" };
+
+    function getStudentName(nim) {
+        return studentNames[nim] || `Mahasiswa (${nim})`;
+    }
+
+    // DOM Elements
+    const loginPage = document.getElementById('loginPage');
+    const dashboardPage = document.getElementById('dashboardPage');
+    const sortingPage = document.getElementById('sortingPage');
+    const welcomeSpan = document.getElementById('welcomeUserName');
+    const nimLoginForm = document.getElementById('nimLoginForm');
+    const nimInputField = document.getElementById('nimInput');
+    const loginMsg = document.getElementById('loginMessage');
+
+    function showLoginError(msg) {
+        loginMsg.innerHTML = msg;
+        loginMsg.classList.add('error');
+        setTimeout(() => { loginMsg.classList.remove('error'); loginMsg.innerHTML = ''; }, 2500);
+    }
+
+    // LOGIN
+    nimLoginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let nim = nimInputField.value.trim();
+        if (!/^\d{6,15}$/.test(nim)) {
+            showLoginError('❌ NIM tidak valid! Masukkan 6-15 digit angka.');
+            return;
+        }
+        const displayName = getStudentName(nim);
+        currentUser = { nim: nim, name: displayName };
+        welcomeSpan.innerHTML = `👋 Halo, ${displayName}`;
+        loginPage.style.display = 'none';
+        dashboardPage.style.display = 'block';
+        sortingPage.style.display = 'none';
+        resetSortingVisual();
+    });
+
+    // LOGOUT
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        currentUser = { nim: "", name: "" };
+        loginPage.style.display = 'flex';
+        dashboardPage.style.display = 'none';
+        sortingPage.style.display = 'none';
+        nimInputField.value = '';
+    });
+
+    // NAVIGASI CARD
+    document.getElementById('cardFungsi').addEventListener('click', () => {
+        alert("📘 Materi Fungsi dan Prosedur akan segera hadir!");
+    });
+    document.getElementById('cardSearch').addEventListener('click', () => {
+        alert("🔍 Algoritma Pencarian dalam pengembangan!");
+    });
+    document.getElementById('cardSorting').addEventListener('click', () => {
+        dashboardPage.style.display = 'none';
+        sortingPage.style.display = 'block';
+        resetSortingVisual();
+    });
+    document.getElementById('backToDashboardFromSort').addEventListener('click', () => {
+        sortingPage.style.display = 'none';
+        dashboardPage.style.display = 'block';
+    });
+
+    // ========== ALGORITMA PENGURUTAN INTERAKTIF ==========
+    let currentArray = [29, 10, 14, 37, 13, 25, 8];
+    let sortingInterval = null;
+    const arrayContainer = document.getElementById('arrayBars');
+    const stepMsgDiv = document.getElementById('sortStepMessage');
+    const explanationText = document.getElementById('explanationText');
+
+    function drawBars(arr, highlightIndices = []) {
+        arrayContainer.innerHTML = '';
+        const maxVal = Math.max(...arr);
+        arr.forEach((value, idx) => {
+            const barHeight = (value / maxVal) * 180 + 30;
+            const bar = document.createElement('div');
+            bar.className = 'bar';
+            bar.style.height = `${barHeight}px`;
+            bar.style.width = window.innerWidth < 700 ? '40px' : '60px';
+            bar.style.background = highlightIndices.includes(idx) ? '#f4a261' : 'linear-gradient(180deg, #2c7da0, #1f5e7a)';
+            const numberSpan = document.createElement('span');
+            numberSpan.innerText = value;
+            bar.appendChild(numberSpan);
+            arrayContainer.appendChild(bar);
+        });
+    }
+
+    function resetSortingVisual() {
+        if (sortingInterval) clearInterval(sortingInterval);
+        currentArray = [29, 10, 14, 37, 13, 25, 8];
+        drawBars(currentArray);
+        stepMsgDiv.innerHTML = '✨ Array telah direset. Pilih algoritma untuk memulai pengurutan.';
+        explanationText.innerHTML = 'Klik salah satu algoritma untuk melihat bagaimana array diurutkan langkah demi langkah.';
+    }
+
+    async function animateSort(stepsArray, algoName, description) {
+        if (sortingInterval) clearInterval(sortingInterval);
+        stepMsgDiv.innerHTML = `⏳ Menjalankan ${algoName}...`;
+        explanationText.innerHTML = description;
+        for (let i = 0; i < stepsArray.length; i++) {
+            await new Promise(resolve => setTimeout(resolve, 400));
+            drawBars(stepsArray[i].array, stepsArray[i].highlight || []);
+            stepMsgDiv.innerHTML = `📌 ${algoName} - Langkah ${i+1}/${stepsArray.length}`;
+        }
+        const finalArr = stepsArray[stepsArray.length-1].array;
+        stepMsgDiv.innerHTML = `✅ ${algoName} selesai! Array terurut: [${finalArr.join(', ')}]`;
+        explanationText.innerHTML = `${algoName} berhasil mengurutkan data. ${description}`;
+    }
+
+    function generateBubbleSteps(arr) {
+        let steps = [], tempArr = [...arr], n = tempArr.length;
+        for (let i = 0; i < n-1; i++) {
+            for (let j = 0; j < n-i-1; j++) {
+                if (tempArr[j] > tempArr[j+1]) {
+                    [tempArr[j], tempArr[j+1]] = [tempArr[j+1], tempArr[j]];
+                }
+                steps.push({ array: [...tempArr], highlight: [j, j+1] });
+            }
+        }
+        steps.push({ array: [...tempArr], highlight: [] });
+        return steps;
+    }
+
+    function generateSelectionSteps(arr) {
+        let steps = [], tempArr = [...arr], n = tempArr.length;
+        for (let i = 0; i < n-1; i++) {
+            let minIdx = i;
+            for (let j = i+1; j < n; j++) {
+                if (tempArr[j] < tempArr[minIdx]) minIdx = j;
+                steps.push({ array: [...tempArr], highlight: [j, minIdx] });
+            }
+            if (minIdx !== i) {
+                [tempArr[i], tempArr[minIdx]] = [tempArr[minIdx], tempArr[i]];
+            }
+            steps.push({ array: [...tempArr], highlight: [i] });
+        }
+        steps.push({ array: [...tempArr], highlight: [] });
+        return steps;
+    }
+
+    function generateInsertionSteps(arr) {
+        let steps = [], tempArr = [...arr], n = tempArr.length;
+        for (let i = 1; i < n; i++) {
+            let key = tempArr[i], j = i-1;
+            while (j >= 0 && tempArr[j] > key) {
+                tempArr[j+1] = tempArr[j];
+                steps.push({ array: [...tempArr], highlight: [j, j+1] });
+                j--;
+            }
+            tempArr[j+1] = key;
+            steps.push({ array: [...tempArr], highlight: [j+1] });
+        }
+        steps.push({ array: [...tempArr], highlight: [] });
+        return steps;
+    }
+
+    // Event listeners sorting
+    document.getElementById('bubbleSortBtn').addEventListener('click', () => {
+        if (sortingInterval) clearInterval(sortingInterval);
+        animateSort(generateBubbleSteps(currentArray), 'Bubble Sort', 'Bubble Sort membandingkan elemen bertetangga dan menukarnya jika salah urutan.');
+    });
+    document.getElementById('selectionSortBtn').addEventListener('click', () => {
+        animateSort(generateSelectionSteps(currentArray), 'Selection Sort', 'Selection Sort mencari nilai minimum dari bagian yang belum terurut, lalu menukarnya ke posisi awal.');
+    });
+    document.getElementById('insertionSortBtn').addEventListener('click', () => {
+        animateSort(generateInsertionSteps(currentArray), 'Insertion Sort', 'Insertion Sort membangun array terurut satu per satu dengan menyisipkan elemen ke posisi yang tepat.');
+    });
+    document.getElementById('resetArrayBtn').addEventListener('click', () => {
+        if (sortingInterval) clearInterval(sortingInterval);
+        resetSortingVisual();
+    });
+
+    // Inisialisasi
+    resetSortingVisual();
+
+    window.addEventListener('resize', () => {
+        if (sortingPage.style.display === 'block') drawBars(currentArray);
+    });
+</script>
+</body>
+</html>
